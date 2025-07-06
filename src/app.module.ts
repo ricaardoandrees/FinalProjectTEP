@@ -12,6 +12,7 @@ import { SesionModule } from 'src/Model/Sesion/Sesion.module';
 import {CalificacionModule} from "./Model/Calificacion/Calificacion.module";
 import {LogModule} from "./Model/Log/Log.module";
 import { LoggingInterceptor } from './Model/Log/logging.interceptor';
+import {EstudianteModule} from "./Model/Estudiante/Estudiante.module";
 
 
 @Module({
@@ -25,7 +26,7 @@ import { LoggingInterceptor } from './Model/Log/logging.interceptor';
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
   }),MateriaModule,UsuarioModule,TutorModule,
-    CoordinadorModule,SolicitudModule,SesionModule,CalificacionModule,LogModule],
+    CoordinadorModule,SolicitudModule,SesionModule,CalificacionModule,LogModule,EstudianteModule],
   controllers: [AppController],
   providers: [AppService, {provide: APP_INTERCEPTOR, useClass: LoggingInterceptor}],
 })

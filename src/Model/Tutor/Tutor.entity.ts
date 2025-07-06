@@ -35,5 +35,5 @@ export class Tutor {
     // Relación N:1 con Materia
     @ManyToOne(() => Materia, { nullable: true })
     @JoinColumn({ name: 'materia_id' })
-    materia: Materia;
+    materia_id: Materia;
 }

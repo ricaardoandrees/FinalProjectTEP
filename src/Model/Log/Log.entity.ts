@@ -14,9 +14,9 @@ export class Log {
     id: number;
 
     // Relación correcta: no @Column, sí @JoinColumn
-    @ManyToOne(() => Usuario, { nullable: false })
+    @ManyToOne(() => Usuario, { nullable: false, eager: true })
     @JoinColumn({ name: 'usuario_id' })
-    usuario: Usuario;
+    usuario_id: Usuario;
 
     @Column({ length: 100 })
     accion: string;

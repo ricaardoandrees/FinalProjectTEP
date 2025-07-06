@@ -18,19 +18,19 @@ export class Sesion {
 
     @OneToOne(() => Solicitud)
     @JoinColumn({ name: 'solicitud_id' })
-    solicitud: Solicitud;
+    solicitud_id: Solicitud;
 
-    @ManyToOne(() => Tutor, { nullable: false })
+    @ManyToOne(() => Tutor, { nullable: false , eager: true })
     @JoinColumn({ name: 'tutor_id' })
-    tutor: Tutor;
+    tutor_id: Tutor;
 
-    @ManyToOne(() => Estudiante, { nullable: false })
+    @ManyToOne(() => Estudiante, { nullable: false, eager: true})
     @JoinColumn({ name: 'estudiante_id' })
-    estudiante: Estudiante;
+    estudiante_id: Estudiante;
 
-    @ManyToOne(() => Materia, { nullable: false })
+    @ManyToOne(() => Materia, { nullable: false , eager: true})
     @JoinColumn({ name: 'materia_id' })
-    materia: Materia;
+    materia_id: Materia;
 
     @Column({ type: 'date' })
     fecha: string;
