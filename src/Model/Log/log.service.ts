@@ -45,14 +45,4 @@ export class LogService {
     await this.LogRepository.delete(id);
     console.log(`Eliminando Log con ID: ${id} desde el servicio...`);
   }
-
-  async createLog(accion: string, usuario: any, ruta: string, metodo: string) {
-        const log = this.LogRepository.create({
-        accion,
-        usuario_id: usuario || undefined,
-        ruta,
-        metodo,
-        });
-        await this.LogRepository.save(log);
-    }
 }
