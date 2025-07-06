@@ -11,7 +11,7 @@ import { SesionModule } from 'src/Model/Sesion/Sesion.module';
 import {CalificacionModule} from "./Model/Calificacion/Calificacion.module";
 import {LogModule} from "./Model/Log/Log.module";
 
-
+//xd
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'postgres',
