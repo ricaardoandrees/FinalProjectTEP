@@ -15,36 +15,32 @@ export class TutorService {
 
   async findAll(): Promise<Tutor[]> {
     // Lógica para obtener todas las Tutores (ej. desde la base de datos)
-    // return this.TutorRepository.find();
-    console.log('Obteniendo todas las Tutores desde el servicio...');
-    return []; // Retorno de ejemplo
+   console.log('Obteniendo todas las Tutores desde el servicio...');
+    return this.TutorRepository.find();
   }
 
-  async findOne(id: string): Promise<Tutor | null> { // ¡CORREGIDO: Puede devolver null!
+  async findOne(id: string): Promise<Tutor | null> { 
     // Lógica para obtener una Tutor por ID
-    console.log(`Obteniendo Tutor con ID: ${id} desde el servicio...`);
+   console.log(`Obteniendo Tutor con ID: ${id} desde el servicio...`);
     return this.TutorRepository.findOne({ where: { id: parseInt(id) } }); // Agregado 'where' y parseo de ID si es numérico
   }
 
   async create(Tutor: Tutor): Promise<Tutor> {
     // Lógica para crear una nueva Tutor
-    // const newTutor = this.TutorRepository.create(Tutor);
-    // return this.TutorRepository.save(newTutor);
-    console.log(`Creando nueva Tutor: ${JSON.stringify(Tutor)} desde el servicio...`);
-    return Tutor; // Retorno de ejemplo
+    const newTutor = this.TutorRepository.create(Tutor);
+    return this.TutorRepository.save(newTutor);
   }
 
-  async update(id: string, Tutor: Tutor): Promise<Tutor> {
+  async update(id: string, Tutor: Tutor): Promise<Tutor | null> {
     // Lógica para actualizar una Tutor existente
-    // await this.TutorRepository.update(id, Tutor);
-    // return this.TutorRepository.findOne(id);
-    console.log(`Actualizando Tutor con ID: ${id} y datos: ${JSON.stringify(Tutor)} desde el servicio...`);
-    return Tutor; // Retorno de ejemplo
+    await this.TutorRepository.update(id, Tutor);
+   console.log(`Actualizando Tutor con ID: ${id} y datos: ${JSON.stringify(Tutor)} desde el servicio...`);
+    return this.TutorRepository.findOne({ where: { id: parseInt(id) }} );
   }
 
   async remove(id: string): Promise<void> {
     // Lógica para eliminar una Tutor
-    // await this.TutorRepository.delete(id);
-    console.log(`Eliminando Tutor con ID: ${id} desde el servicio...`);
+    await this.TutorRepository.delete(id);
+   console.log(`Eliminando Tutor con ID: ${id} desde el servicio...`);
   }
 }

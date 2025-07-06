@@ -15,12 +15,11 @@ export class EstudianteService {
 
   async findAll(): Promise<Estudiante[]> {
     // Lógica para obtener todas las Estudiantees (ej. desde la base de datos)
-    // return this.EstudianteRepository.find();
     console.log('Obteniendo todas las Estudiantees desde el servicio...');
-    return []; // Retorno de ejemplo
+    return this.EstudianteRepository.find();
   }
 
-  async findOne(id: string): Promise<Estudiante | null> { // ¡CORREGIDO: Puede devolver null!
+  async findOne(id: string): Promise<Estudiante | null> { 
     // Lógica para obtener una Estudiante por ID
     console.log(`Obteniendo Estudiante con ID: ${id} desde el servicio...`);
     return this.EstudianteRepository.findOne({ where: { id: parseInt(id) } }); // Agregado 'where' y parseo de ID si es numérico
@@ -28,23 +27,20 @@ export class EstudianteService {
 
   async create(Estudiante: Estudiante): Promise<Estudiante> {
     // Lógica para crear una nueva Estudiante
-    // const newEstudiante = this.EstudianteRepository.create(Estudiante);
-    // return this.EstudianteRepository.save(newEstudiante);
-    console.log(`Creando nueva Estudiante: ${JSON.stringify(Estudiante)} desde el servicio...`);
-    return Estudiante; // Retorno de ejemplo
+    const newEstudiante = this.EstudianteRepository.create(Estudiante);
+    return this.EstudianteRepository.save(newEstudiante);
   }
 
-  async update(id: string, Estudiante: Estudiante): Promise<Estudiante> {
+  async update(id: string, Estudiante: Estudiante): Promise<Estudiante | null> {
     // Lógica para actualizar una Estudiante existente
-    // await this.EstudianteRepository.update(id, Estudiante);
-    // return this.EstudianteRepository.findOne(id);
+    await this.EstudianteRepository.update(id, Estudiante);
     console.log(`Actualizando Estudiante con ID: ${id} y datos: ${JSON.stringify(Estudiante)} desde el servicio...`);
-    return Estudiante; // Retorno de ejemplo
+    return this.EstudianteRepository.findOne({ where: { id: parseInt(id) }} );
   }
 
   async remove(id: string): Promise<void> {
     // Lógica para eliminar una Estudiante
-    // await this.EstudianteRepository.delete(id);
+    await this.EstudianteRepository.delete(id);
     console.log(`Eliminando Estudiante con ID: ${id} desde el servicio...`);
   }
 }

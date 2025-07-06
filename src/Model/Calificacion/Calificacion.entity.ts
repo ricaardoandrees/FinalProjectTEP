@@ -15,17 +15,17 @@ export class Calificacion {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Sesion, { nullable: false })
+    @ManyToOne(() => Sesion, { nullable: false , eager: true  })
     @JoinColumn({ name: 'sesion_id' })
-    sesion: Sesion;
+    sesion_id: Sesion;
 
-    @ManyToOne(() => Estudiante, { nullable: false })
+    @ManyToOne(() => Estudiante, { nullable: false  , eager: true })
     @JoinColumn({ name: 'estudiante_id' })
-    estudiante: Estudiante;
+    estudiante_id: Estudiante;
 
-    @ManyToOne(() => Tutor, { nullable: false })
+    @ManyToOne(() => Tutor, { nullable: false , eager: true  })
     @JoinColumn({ name: 'tutor_id' })
-    tutor: Tutor;
+    tutor_id: Tutor;
 
     @Column({ type: 'int', nullable: false, comment: '1 a 5' })
     calificacion: number;

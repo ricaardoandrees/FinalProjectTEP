@@ -1,4 +1,4 @@
-// src/Calificacion/calificacion.service.ts
+// src/Calificacion/Calificacion.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'; // Necesario si usas TypeORM
 import { Repository } from 'typeorm'; // Necesario si usas TypeORM
@@ -8,43 +8,39 @@ import { Calificacion } from './Calificacion.entity'; // Importa tu entidad Cali
 export class CalificacionService {
   constructor(
   @InjectRepository(Calificacion)
-    private calificacionRepository: Repository<Calificacion>,
+    private CalificacionRepository: Repository<Calificacion>,
   ) {}
  
   // Ejemplo de métodos CRUD básicos:
 
   async findAll(): Promise<Calificacion[]> {
-    // Lógica para obtener todas las calificaciones (ej. desde la base de datos)
-    // return this.calificacionRepository.find();
-    console.log('Obteniendo todas las calificaciones desde el servicio...');
-    return []; // Retorno de ejemplo
+    // Lógica para obtener todas las Calificaciones (ej. desde la base de datos)
+    console.log('Obteniendo todas las Calificaciones desde el servicio...');
+    return this.CalificacionRepository.find();
   }
 
-  async findOne(id: string): Promise<Calificacion | null> { // ¡CORREGIDO: Puede devolver null!
-    // Lógica para obtener una calificación por ID
-    console.log(`Obteniendo calificación con ID: ${id} desde el servicio...`);
-    return this.calificacionRepository.findOne({ where: { id: parseInt(id) } }); // Agregado 'where' y parseo de ID si es numérico
+  async findOne(id: string): Promise<Calificacion | null> { 
+    // Lógica para obtener una Calificacion por ID
+    console.log(`Obteniendo Calificacion con ID: ${id} desde el servicio...`);
+    return this.CalificacionRepository.findOne({ where: { id: parseInt(id) } }); // Agregado 'where' y parseo de ID si es numérico
   }
 
-  async create(calificacion: Calificacion): Promise<Calificacion> {
-    // Lógica para crear una nueva calificación
-    // const newCalificacion = this.calificacionRepository.create(calificacion);
-    // return this.calificacionRepository.save(newCalificacion);
-    console.log(`Creando nueva calificación: ${JSON.stringify(calificacion)} desde el servicio...`);
-    return calificacion; // Retorno de ejemplo
+  async create(Calificacion: Calificacion): Promise<Calificacion> {
+    // Lógica para crear una nueva Calificacion
+    const newCalificacion = this.CalificacionRepository.create(Calificacion);
+    return this.CalificacionRepository.save(newCalificacion);
   }
 
-  async update(id: string, calificacion: Calificacion): Promise<Calificacion> {
-    // Lógica para actualizar una calificación existente
-    // await this.calificacionRepository.update(id, calificacion);
-    // return this.calificacionRepository.findOne(id);
-    console.log(`Actualizando calificación con ID: ${id} y datos: ${JSON.stringify(calificacion)} desde el servicio...`);
-    return calificacion; // Retorno de ejemplo
+  async update(id: string, Calificacion: Calificacion): Promise<Calificacion | null> {
+    // Lógica para actualizar una Calificacion existente
+    await this.CalificacionRepository.update(id, Calificacion);
+    console.log(`Actualizando Calificacion con ID: ${id} y datos: ${JSON.stringify(Calificacion)} desde el servicio...`);
+    return this.CalificacionRepository.findOne({ where: { id: parseInt(id) }} );
   }
 
   async remove(id: string): Promise<void> {
-    // Lógica para eliminar una calificación
-    // await this.calificacionRepository.delete(id);
-    console.log(`Eliminando calificación con ID: ${id} desde el servicio...`);
+    // Lógica para eliminar una Calificacion
+    await this.CalificacionRepository.delete(id);
+    console.log(`Eliminando Calificacion con ID: ${id} desde el servicio...`);
   }
 }

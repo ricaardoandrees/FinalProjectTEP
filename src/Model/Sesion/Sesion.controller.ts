@@ -1,32 +1,74 @@
 // src/Sesion/Sesion.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException } from '@nestjs/common';
 import { Sesion } from './Sesion.entity'; 
+import { SesionService } from './Sesion.service'; 
 
 @Controller('Sesion') 
 export class SesionController {
 
-  @Get() // GET /Sesion
-  findAll(): string {
-    return 'Esta acción devuelve todos los Sesiones';
+  constructor(private readonly SesionService: SesionService) {}
+
+  @Get('obtenerSesiones') // GET /Sesion/ObtenerSesions 
+  @HttpCode(HttpStatus.OK)
+  async findAll(): Promise<Sesion[]> {
+    try {
+      console.log('Obteniendo todos los Sesions desde el controlador...');
+      return await this.SesionService.findAll();
+    } catch (error) {
+      console.error('Error al obtener Sesions:', error);
+      throw new InternalServerErrorException('Ocurrió un error inesperado al obtener los Sesions.');
+    }
   }
 
-  @Get(':id') // GET /Sesion/:id
-  findOne(@Param('id') id: string): string {
-    return `Esta acción devuelve el Sesion con ID: ${id}`;
+  //@Get(':id') // GET /Sesion/:id
+  //findOne(@Param('id') id: string): string {
+   //return `Esta acción devuelve el Sesion con ID: ${id}`;
+  //}
+
+  @Post('agregarSesion') // POST /Sesion/agregarSesion
+  @HttpCode(HttpStatus.CREATED) 
+  async create(@Body() createSesionDto: Sesion): Promise<Sesion> {
+    try {
+      return await this.SesionService.create(createSesionDto);
+    } catch (error) {
+      console.error('Error al crear Sesion:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo crear el Sesion: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al crear el Sesion.');
+    }
   }
 
-  @Post() // POST /Sesion
-  create(@Body() createSesionDto: Sesion): string {
-    return `Esta acción crea un nuevo Sesion: ${JSON.stringify(createSesionDto)}`;
+  @Put('actualizarSesion/:id') // PUT /Sesion/actualizarSesion/:id
+  @HttpCode(HttpStatus.OK) 
+  async update(@Param('id') id: string, @Body() updateSesionDto: Sesion): Promise<Sesion | null> {
+    try {
+      const updatedSesion = await this.SesionService.update(id, updateSesionDto);
+      if (!updatedSesion) {
+        throw new NotFoundException(`Sesion con ID ${id} no encontrado.`);
+      }
+      return updatedSesion;
+    } catch (error) {
+      console.error('Error al actualizar Sesion:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo actualizar el Sesion: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al actualizar el Sesion.');
+    }
   }
 
-  @Put(':id') // PUT /Sesion/:id
-  update(@Param('id') id: string, @Body() updateSesionDto: Sesion): string {
-    return `Esta acción actualiza el Sesion con ID: ${id} con datos: ${JSON.stringify(updateSesionDto)}`;
-  }
-
-  @Delete(':id') // DELETE /Sesion/:id
-  remove(@Param('id') id: string): string {
-    return `Esta acción elimina el Sesion con ID: ${id}`;
+  @Delete('borrarSesion/:id') // DELETE /Sesion/borrarSesion/:id
+  @HttpCode(HttpStatus.OK)
+  async remove(@Param('id') id: string): Promise<String> {
+    try {
+      await this.SesionService.remove(id);
+      return `Se elimino al Sesion con id: ${id}`;
+    } catch (error) {
+      console.error('Error al eliminar Sesion:', error);
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(`Sesion con ID ${id} no encontrado.`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al eliminar el Sesion.');
+    }
   }
 }

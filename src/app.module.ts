@@ -10,6 +10,7 @@ import { SolicitudModule } from 'src/Model/Solicitud/Solicitud.module';
 import { SesionModule } from 'src/Model/Sesion/Sesion.module';
 import {CalificacionModule} from "./Model/Calificacion/Calificacion.module";
 import {LogModule} from "./Model/Log/Log.module";
+import {EstudianteModule} from "./Model/Estudiante/Estudiante.module";
 
 
 @Module({
@@ -23,7 +24,7 @@ import {LogModule} from "./Model/Log/Log.module";
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
   }),MateriaModule,UsuarioModule,TutorModule,
-    CoordinadorModule,SolicitudModule,SesionModule,CalificacionModule,LogModule],
+    CoordinadorModule,SolicitudModule,SesionModule,CalificacionModule,LogModule,EstudianteModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -15,12 +15,13 @@ export class LogService {
 
   async findAll(): Promise<Log[]> {
     // Lógica para obtener todas las Loges (ej. desde la base de datos)
-    // return this.LogRepository.find();
-    console.log('Obteniendo todas las Loges desde el servicio...');
-    return []; // Retorno de ejemplo
+    const logs = await this.LogRepository.find();
+    console.log('Obteniendo todas las Loges desde el servicio...' );
+    console.log(logs); // Imprime los logs obtenidos
+    return this.LogRepository.find();
   }
 
-  async findOne(id: string): Promise<Log | null> { // ¡CORREGIDO: Puede devolver null!
+  async findOne(id: string): Promise<Log | null> { 
     // Lógica para obtener una Log por ID
     console.log(`Obteniendo Log con ID: ${id} desde el servicio...`);
     return this.LogRepository.findOne({ where: { id: parseInt(id) } }); // Agregado 'where' y parseo de ID si es numérico
@@ -28,23 +29,20 @@ export class LogService {
 
   async create(Log: Log): Promise<Log> {
     // Lógica para crear una nueva Log
-    // const newLog = this.LogRepository.create(Log);
-    // return this.LogRepository.save(newLog);
-    console.log(`Creando nueva Log: ${JSON.stringify(Log)} desde el servicio...`);
-    return Log; // Retorno de ejemplo
+    const newLog = this.LogRepository.create(Log);
+    return this.LogRepository.save(newLog);
   }
 
-  async update(id: string, Log: Log): Promise<Log> {
+  async update(id: string, Log: Log): Promise<Log | null> {
     // Lógica para actualizar una Log existente
-    // await this.LogRepository.update(id, Log);
-    // return this.LogRepository.findOne(id);
+    await this.LogRepository.update(id, Log);
     console.log(`Actualizando Log con ID: ${id} y datos: ${JSON.stringify(Log)} desde el servicio...`);
-    return Log; // Retorno de ejemplo
+    return this.LogRepository.findOne({ where: { id: parseInt(id) }} );
   }
 
   async remove(id: string): Promise<void> {
     // Lógica para eliminar una Log
-    // await this.LogRepository.delete(id);
+    await this.LogRepository.delete(id);
     console.log(`Eliminando Log con ID: ${id} desde el servicio...`);
   }
 }
