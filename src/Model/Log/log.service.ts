@@ -1,23 +1,60 @@
+// src/Log/Log.service.ts
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Log } from './Log.entity';
-import { Usuario } from '../Usuario/Usuario.entity';
+import { InjectRepository } from '@nestjs/typeorm'; // Necesario si usas TypeORM
+import { Repository } from 'typeorm'; // Necesario si usas TypeORM
+import { Log } from './Log.entity'; // Importa tu entidad Log
 
 @Injectable()
 export class LogService {
     constructor(
-        @InjectRepository(Log)
-        private logRepository: Repository<Log>,
+    @InjectRepository(Log)
+        private LogRepository: Repository<Log>,
     ) {}
 
-    async createLog(accion: string, usuario: Usuario | null, ruta: string, metodo: string) {
-        const log = this.logRepository.create({
-            accion,
-            usuario: usuario || undefined,
-            ruta,
-            metodo,
-        });
-        await this.logRepository.save(log);
+  // Ejemplo de métodos CRUD básicos:
+
+    async findAll(): Promise<Log[]> {
+        // Lógica para obtener todas las Loges (ej. desde la base de datos)
+        // return this.LogRepository.find();
+        console.log('Obteniendo todas las Loges desde el servicio...');
+        return []; // Retorno de ejemplo
     }
-} 
+
+    async findOne(id: string): Promise<Log | null> { // ¡CORREGIDO: Puede devolver null!
+        // Lógica para obtener una Log por ID
+        console.log(`Obteniendo Log con ID: ${id} desde el servicio...`);
+        return this.LogRepository.findOne({ where: { id: parseInt(id) } }); // Agregado 'where' y parseo de ID si es numérico
+    }
+
+    async create(Log: Log): Promise<Log> {
+        // Lógica para crear una nueva Log
+        // const newLog = this.LogRepository.create(Log);
+        // return this.LogRepository.save(newLog);
+        console.log(`Creando nueva Log: ${JSON.stringify(Log)} desde el servicio...`);
+        return Log; // Retorno de ejemplo
+    }
+
+    async update(id: string, Log: Log): Promise<Log> {
+        // Lógica para actualizar una Log existente
+        // await this.LogRepository.update(id, Log);
+        // return this.LogRepository.findOne(id);
+        console.log(`Actualizando Log con ID: ${id} y datos: ${JSON.stringify(Log)} desde el servicio...`);
+        return Log; // Retorno de ejemplo
+    }
+
+    async remove(id: string): Promise<void> {
+        // Lógica para eliminar una Log
+        // await this.LogRepository.delete(id);
+        console.log(`Eliminando Log con ID: ${id} desde el servicio...`);
+    }
+
+    async createLog(accion: string, usuario: any, ruta: string, metodo: string) {
+        const log = this.LogRepository.create({
+        accion,
+        usuario: usuario || undefined,
+        ruta,
+        metodo,
+        });
+        await this.LogRepository.save(log);
+    }
+}
