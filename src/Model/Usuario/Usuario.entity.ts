@@ -17,7 +17,7 @@ export class Usuario {
     correo: string;
 
     // Mapeamos la columna SQL "contraseña" a la propiedad TS "contrasena"
-    @Column({ name: 'contraseña', length: 255 })
+    @Column({ name: 'contrasena', length: 255 })
     contrasena: string;
 
     @Column({ default: true })

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,6 +11,8 @@ import { SolicitudModule } from 'src/Model/Solicitud/Solicitud.module';
 import { SesionModule } from 'src/Model/Sesion/Sesion.module';
 import {CalificacionModule} from "./Model/Calificacion/Calificacion.module";
 import {LogModule} from "./Model/Log/Log.module";
+import { LoggingInterceptor } from './Model/Log/logging.interceptor';
+import {EstudianteModule} from "./Model/Estudiante/Estudiante.module";
 
 //xd
 @Module({
@@ -18,13 +21,13 @@ import {LogModule} from "./Model/Log/Log.module";
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: 'Sabrina0405+',
+    password: 'Jp30871276!',
     database: 'Esquemas Tutoria',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
   }),MateriaModule,UsuarioModule,TutorModule,
-    CoordinadorModule,SolicitudModule,SesionModule,CalificacionModule,LogModule],
+    CoordinadorModule,SolicitudModule,SesionModule,CalificacionModule,LogModule,EstudianteModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {provide: APP_INTERCEPTOR, useClass: LoggingInterceptor}],
 })
 export class AppModule {}

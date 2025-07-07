@@ -15,27 +15,27 @@ export class Solicitud {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Estudiante, { nullable: false })
+    @ManyToOne(() => Estudiante, { nullable: false , eager: true})
     @JoinColumn({ name: 'estudiante_id' })
-    estudiante: Estudiante;
+    estudiante_id: Estudiante;
 
-    @ManyToOne(() => Materia, { nullable: false })
+    @ManyToOne(() => Materia, { nullable: false , eager: true})
     @JoinColumn({ name: 'materia_id' })
-    materia: Materia;
+    materia_id: Materia;
 
     @Column({ name: 'fecha_solicitada', type: 'date' })
-    fechaSolicitada: string;
+    fecha_solicitada: string;
 
     @Column({ name: 'hora_solicitada', type: 'time' })
-    horaSolicitada: string;
+    hora_solicitada: string;
 
     @Column({ length: 20 })
     estado: string;
 
-    @ManyToOne(() => Tutor, { nullable: true })
+    @ManyToOne(() => Tutor, { nullable: true , eager: true})
     @JoinColumn({ name: 'tutor_id' })
-    tutor?: Tutor;
+    tutor_id?: Tutor;
 
     @CreateDateColumn({ name: 'fecha_creacion', type: 'timestamp' })
-    fechaCreacion: Date;
+    fecha_creacion: Date;
 }

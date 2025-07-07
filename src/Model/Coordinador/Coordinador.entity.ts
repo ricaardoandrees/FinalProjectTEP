@@ -20,7 +20,7 @@ export class Coordinador {
     departamento: string;
 
     @Column({ name: 'extension_interna', length: 20, nullable: true })
-    extensionInterna: string;
+    extension_interna: string;
 
     // Relación 1:1 con Usuario
     @OneToOne(() => Usuario)
