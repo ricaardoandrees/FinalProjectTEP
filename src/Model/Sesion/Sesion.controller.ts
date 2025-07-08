@@ -71,4 +71,23 @@ export class SesionController {
       throw new InternalServerErrorException('Ocurrió un error inesperado al eliminar el Sesion.');
     }
   }
+
+
+  @Put('marcarSesionCompletada/:tutorId/:sesionId') // PUT /Sesion/marcarSesionCompletada/:tutorId/:sesionId
+  @HttpCode(HttpStatus.OK)
+  async marcarSesionCompletada(@Param('tutorId') tutorId: string,@Param('sesionId') sesionId: string): Promise<Sesion | null> {
+    try {
+      const sesionActualizada = await this.SesionService.marcarSesionCompletada(tutorId, sesionId);
+      if (sesionActualizada === null) {
+        throw new Error(`Sesion con ID ${sesionId} no encontrado para el tutor con ID ${tutorId}.`);
+      }
+      return sesionActualizada;
+    } catch (error) {
+      console.error('Error al marcar la sesión como completada:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo marcar la sesión como completada: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al marcar la sesión como completada.');
+    }
+  }
 }

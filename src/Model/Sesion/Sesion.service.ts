@@ -43,4 +43,23 @@ export class SesionService {
     await this.SesionRepository.delete(id);
    console.log(`Eliminando Sesion con ID: ${id} desde el servicio...`);
   }
+
+
+  async marcarSesionCompletada(tutorId: string, sesionId:string): Promise<Sesion| null > {
+    console.log(`Marcando la sesion: ${sesionId} del tutor con ID: ${tutorId} como completada...`);
+    const result = await this.SesionRepository.update(
+      { 
+        id:  parseInt(sesionId),
+        tutor_id: { id: tutorId } as any
+      },
+      { completada: true }
+    );
+     if (result.affected && result.affected > 0) {
+      return this.SesionRepository.findOne({ where: { id: parseInt(sesionId) } });
+    }
+    else{
+      console.log(`No se encontró la sesión con ID: ${sesionId} para el tutor con ID: ${tutorId}`);
+      return null;
+    }
+  }
 }
