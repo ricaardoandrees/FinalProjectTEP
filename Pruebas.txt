@@ -113,3 +113,5 @@ Prueba de insertar una Calificacion en http://localhost:3000/Calificacion/agrega
   "calificacion": 5,
   "comentario": "Excelente sesión, el tutor explicó muy bien su tema."
 }
+
+para probar el marcado de una sesion como completada: http://localhost:3000/Sesion/marcarSesionCompletada/3/1 (el primer parametro es la id del tutor y el segundo el id de la sesion)

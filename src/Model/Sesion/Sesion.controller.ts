@@ -90,4 +90,5 @@ export class SesionController {
       throw new InternalServerErrorException('Ocurrió un error inesperado al marcar la sesión como completada.');
     }
   }
+  
 }
