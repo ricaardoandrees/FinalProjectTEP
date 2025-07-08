@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Log } from './Log.entity';
 import { LogController } from './Log.controller'; 
-import { LogService } from './log.service';
+import { LogService } from './Log.service';
 import { LoggingInterceptor } from './logging.interceptor';
 
 @Module({
