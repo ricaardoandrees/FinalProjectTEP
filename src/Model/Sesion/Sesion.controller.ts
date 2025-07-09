@@ -1,5 +1,5 @@
 // src/Sesion/Sesion.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException, Query } from '@nestjs/common';
 import { Sesion } from './Sesion.entity'; 
 import { SesionService } from './Sesion.service'; 
 
@@ -91,4 +91,90 @@ export class SesionController {
     }
   }
   
+  @Get('filtarSesionesPorTutor/:tutorId') // GET /Sesion/filtarSesionesPorTutor/:tutorId
+  @HttpCode(HttpStatus.OK)
+  async filtarSesionesPorTutor(@Param('tutorId') tutorId: string): Promise<Sesion[]> {
+    try {
+      return await this.SesionService.filtarSesionesPorTutor(tutorId);
+    } catch (error) {
+      console.error('Error al filtrar sesiones por tutor:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo filtrar las sesiones por tutor: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al filtrar las sesiones por tutor.');
+    }
+  }
+
+  @Get('filtarSesionesPorMateria/:materiaId') // GET /Sesion/filtarSesionesPorMateria/:materiaId
+  @HttpCode(HttpStatus.OK)
+  async filtarSesionesPorMateria(@Param('materiaId') materiaId: string): Promise<Sesion[]> {
+    try {
+      return await this.SesionService.filtarSesionesPorMateria(materiaId);
+    } catch (error) {
+      console.error('Error al filtrar sesiones por materia:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo filtrar las sesiones por materia: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al filtrar las sesiones por materia.');
+    }
+  }
+
+  @Get('filtarSesionesPorFecha/:fechaActual') // GET /Sesion/filtarSesionesPorFecha/:fechaActual
+  @HttpCode(HttpStatus.OK)
+  async filtarSesionesPorFecha(@Param('fechaActual') fechaActual: string): Promise<Sesion[]> {
+    try {
+      const fecha = new Date(fechaActual);
+      return await this.SesionService.filtarSesionesPorFecha(fecha);
+    } catch (error) {
+      console.error('Error al filtrar sesiones por fecha:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo filtrar las sesiones por fecha: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al filtrar las sesiones por fecha.');
+    }
+  }
+
+  @Get('filtarSesionesPorEstado') // GET ej: /Sesion/filtarSesionesPorEstado?completada=true)
+  @HttpCode(HttpStatus.OK) 
+  async filtarSesionesPorEstado(@Query('completada') completadaString: string): Promise<Sesion[]> {
+    let estado:boolean;
+    if (completadaString === 'true') {
+      estado = true;
+    } else if (completadaString === 'false') {
+      estado = false;
+    } else {
+      throw new BadRequestException('El parámetro "completada" debe ser "true" o "false".');
+    }
+    try {
+      return await this.SesionService.filtarSesionesPorEstado(estado);
+    } catch (error) {
+      console.error('Error al filtrar sesiones por estado:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo filtrar las sesiones por estado: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al filtrar las sesiones por estado.');
+    }
+  }
+
+  @Get('sesionesPorTutor') // GET /Sesion/sesionesPorTutor
+  @HttpCode(HttpStatus.OK)
+  async getCantidadSesionesPorTodosLosTutores(): Promise<{ tutorId: number; tutorNombre: string; cantidad: number }[]> { 
+    try {
+      return await this.SesionService.getCantidadSesionesPorTodosLosTutores();
+    } catch (error: any) {
+      console.error('Error al obtener la cantidad de sesiones por cada tutor:', error);
+      throw new InternalServerErrorException('Ocurrió un error inesperado al obtener la cantidad de sesiones por cada tutor.');
+    }
+  }
+
+  @Get('sesionesPorMateria') // GET /Sesion/sesionesPorMateria
+  @HttpCode(HttpStatus.OK)
+  async getCantidadSesionesPorTodasLasMaterias(): Promise<{ materiaId: number; materiaNombre: string; cantidad: number }[]> {
+    try {
+      return await this.SesionService.getCantidadSesionesPorTodasLasMaterias();
+    } catch (error: any) {
+      console.error('Error al obtener la cantidad de sesiones por cada materia:', error);
+      throw new InternalServerErrorException('Ocurrió un error inesperado al obtener la cantidad de sesiones por cada materia.');
+    }
+  }
 }

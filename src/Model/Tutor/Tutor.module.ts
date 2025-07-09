@@ -8,6 +8,7 @@ import { TutorService } from './Tutor.service';
 @Module({
     controllers: [TutorController], 
     imports: [TypeOrmModule.forFeature([Tutor])],
-    providers: [TutorService]
+    providers: [TutorService],
+    exports: [TypeOrmModule.forFeature([Tutor]), TutorService],
 })
 export class TutorModule {}
