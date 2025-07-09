@@ -8,6 +8,7 @@ import { MateriaService} from './Materia.service';
 @Module({
     imports: [TypeOrmModule.forFeature([Materia])],
     controllers: [MateriaController],
-    providers:[MateriaService]
+    providers:[MateriaService],
+    exports: [TypeOrmModule.forFeature([Materia]), MateriaService],
 })
 export class MateriaModule {}
