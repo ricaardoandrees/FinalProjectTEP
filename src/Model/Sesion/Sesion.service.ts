@@ -3,12 +3,21 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'; // Necesario si usas TypeORM
 import { Repository,Raw  } from 'typeorm'; // Necesario si usas TypeORM
 import { Sesion } from './Sesion.entity'; // Importa tu entidad Sesion
+import { Tutor } from '../Tutor/Tutor.entity'; // Importa tu entidad Tutor si la necesitas
+import { Materia } from '../Materia/Materia.entity'; // Importa tu entidad Materia si la necesitas
+import { Usuario } from '../Usuario/Usuario.entity';
 
 @Injectable()
 export class SesionService {
   constructor(
   @InjectRepository(Sesion)
     private SesionRepository: Repository<Sesion>,
+    @InjectRepository(Tutor) 
+    private TutorRepository: Repository<Tutor>,
+    @InjectRepository(Materia) 
+    private MateriaRepository: Repository<Materia>,
+    @InjectRepository(Materia) 
+    private UsuarioRepository: Repository<Usuario>
   ) {}
  
   // Ejemplo de métodos CRUD básicos:
@@ -133,4 +142,49 @@ export class SesionService {
       throw new BadRequestException(`No se encontraron sesiones: ${respuesta}`);
     }
   }
+
+  async getCantidadSesionesPorTodosLosTutores(): Promise<{ tutorId: number; tutorNombre: string; cantidad: number }[]> {
+    console.log('Calculando la cantidad de sesiones por cada tutor (incluyendo nombre de usuario)...');
+
+    const result = await this.SesionRepository.createQueryBuilder('sesion')
+      .leftJoin('sesion.tutor_id', 'tutor') 
+      .leftJoin('tutor.usuario', 'usuario') 
+      .select('tutor.id', 'tutorId') 
+      .addSelect('usuario.nombre', 'tutorNombre') 
+      .addSelect('COUNT(sesion.id)', 'cantidad') 
+      .groupBy('tutor.id') 
+      .addGroupBy('usuario.nombre') 
+      .getRawMany();
+
+    const resultadoFormateado = result.map(row => ({
+      tutorId: parseInt(row.tutorId),
+      tutorNombre: row.tutorNombre,
+      cantidad: parseInt(row.cantidad),
+    }));
+
+    console.log('Estadísticas de sesiones por tutor (con nombre de usuario) calculadas:', resultadoFormateado);
+    return resultadoFormateado;
+  }
+  async getCantidadSesionesPorTodasLasMaterias(): Promise<{ materiaId: number; materiaNombre: string; cantidad: number }[]> {
+    console.log('Calculando la cantidad de sesiones por cada materia (incluyendo nombre)...');
+
+    const result = await this.SesionRepository.createQueryBuilder('sesion')
+      .leftJoin('sesion.materia_id', 'materia') 
+      .select('materia.id', 'materiaId') 
+      .addSelect('materia.nombre', 'materiaNombre') 
+      .addSelect('COUNT(sesion.id)', 'cantidad') 
+      .groupBy('materia.id')
+      .addGroupBy('materia.nombre') 
+      .getRawMany();
+
+    const resultadoFormateado = result.map(row => ({
+      materiaId: parseInt(row.materiaId),
+      materiaNombre: row.materiaNombre, 
+      cantidad: parseInt(row.cantidad),
+    }));
+
+    console.log('Estadísticas de sesiones por materia (con nombre) calculadas:', resultadoFormateado);
+    return resultadoFormateado;
+  }
+
 }

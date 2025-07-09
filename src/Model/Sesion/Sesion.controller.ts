@@ -156,4 +156,25 @@ export class SesionController {
     }
   }
 
+  @Get('sesionesPorTutor') // GET /Sesion/sesionesPorTutor
+  @HttpCode(HttpStatus.OK)
+  async getCantidadSesionesPorTodosLosTutores(): Promise<{ tutorId: number; tutorNombre: string; cantidad: number }[]> { 
+    try {
+      return await this.SesionService.getCantidadSesionesPorTodosLosTutores();
+    } catch (error: any) {
+      console.error('Error al obtener la cantidad de sesiones por cada tutor:', error);
+      throw new InternalServerErrorException('Ocurrió un error inesperado al obtener la cantidad de sesiones por cada tutor.');
+    }
+  }
+
+  @Get('sesionesPorMateria') // GET /Sesion/sesionesPorMateria
+  @HttpCode(HttpStatus.OK)
+  async getCantidadSesionesPorTodasLasMaterias(): Promise<{ materiaId: number; materiaNombre: string; cantidad: number }[]> {
+    try {
+      return await this.SesionService.getCantidadSesionesPorTodasLasMaterias();
+    } catch (error: any) {
+      console.error('Error al obtener la cantidad de sesiones por cada materia:', error);
+      throw new InternalServerErrorException('Ocurrió un error inesperado al obtener la cantidad de sesiones por cada materia.');
+    }
+  }
 }

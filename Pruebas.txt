@@ -128,3 +128,5 @@ para probar el filtrar sesiones por tutor: http://localhost:3000/Sesion/filtarSe
 para probar el filtrar sesiones por materia: http://localhost:3000/Sesion/filtarSesionesPorMateria/2 (el parametro es el id de la materia)
 para probar el filtrar sesiones por fecha exacta: http://localhost:3000/Sesion/filtarSesionesPorFecha/2025-07-10 (el parametro es la fecha actual)
 para probar el filtrar sesiones por completada: http://localhost:3000/Sesion/filtarSesionesPorEstado?completada=true (el parametro se cambia entre true o false)
+para probar el obtener cantidad de sesiones por tutor: http://localhost:3000/Sesion/sesionesPorTutor
+para probar el obtener cantidad de sesiones por materia: http://localhost:3000/Sesion/sesionesPorMateria
