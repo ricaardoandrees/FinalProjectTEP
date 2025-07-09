@@ -87,4 +87,8 @@ export class UsuarioService {
     await this.usuarioRepository.delete(id);
     console.log(`Eliminando Usuario con ID: ${id} desde el servicio...`);
   }
+
+  async findByEmail(email: string): Promise<Usuario | null> {
+    return this.usuarioRepository.findOne({ where: { correo: email } });
+  }
 }

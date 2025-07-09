@@ -43,6 +43,21 @@ export class UsuarioController {
    //return `Esta acción devuelve el Usuario con ID: ${id}`;
   //}
 
+  @Get('obtenerPerfilPorCorreo/:email')
+  @HttpCode(HttpStatus.OK)
+  async getProfileByEmail(@Param('email') email: string): Promise<Usuario | null> {
+    try {
+      const user = await this.usuarioService.findByEmail(email);
+      if (!user) {
+        throw new NotFoundException(`Usuario con correo ${email} no encontrado.`);
+      }
+      return user;
+    } catch (error) {
+      console.error('Error al obtener usuario por correo:', error);
+      throw new InternalServerErrorException('Ocurrió un error inesperado al obtener el usuario por correo.');
+    }
+  }
+
   @Post('agregarUsuario') // POST /Usuario/agregarUsuario
   @HttpCode(HttpStatus.CREATED) 
   async create(@Body() createUsuarioDto: Usuario): Promise<Usuario> {
