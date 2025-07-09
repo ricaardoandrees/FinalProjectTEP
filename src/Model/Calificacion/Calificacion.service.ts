@@ -1,14 +1,17 @@
 // src/Calificacion/Calificacion.service.ts
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'; // Necesario si usas TypeORM
 import { Repository } from 'typeorm'; // Necesario si usas TypeORM
 import { Calificacion } from './Calificacion.entity'; // Importa tu entidad Calificacion
+import { Sesion } from '../Sesion/Sesion.entity'; // Importa la entidad Sesion si es necesario
 
 @Injectable()
 export class CalificacionService {
   constructor(
   @InjectRepository(Calificacion)
     private CalificacionRepository: Repository<Calificacion>,
+  @InjectRepository(Sesion)
+    private SesionRepository: Repository<Sesion>,
   ) {}
  
   // Ejemplo de métodos CRUD básicos:
@@ -42,5 +45,19 @@ export class CalificacionService {
     // Lógica para eliminar una Calificacion
     await this.CalificacionRepository.delete(id);
     console.log(`Eliminando Calificacion con ID: ${id} desde el servicio...`);
+  }
+
+  async calificarSesion(Calificacion: Calificacion): Promise<Calificacion | null> {
+    console.log(`Calificando la sesion con ID: ${Calificacion.sesion_id} con calificacion: ${Calificacion.calificacion} y comentario: ${Calificacion.comentario}...`);
+    const sesionOriginal = await this.SesionRepository.findOne({where: { id: Calificacion.sesion_id.id } });
+    if (sesionOriginal?.completada===false ) {
+      throw new Error(`La sesion no esta terminada: ${Calificacion.sesion_id.id}`);
+    }
+    if (sesionOriginal?.completada===undefined || sesionOriginal===null)
+    {
+      throw new NotFoundException (`La sesion no existe: ${Calificacion.sesion_id.id}`);
+    }
+    const newCalificacion = this.CalificacionRepository.create(Calificacion);
+    return this.CalificacionRepository.save(newCalificacion);
   }
 }

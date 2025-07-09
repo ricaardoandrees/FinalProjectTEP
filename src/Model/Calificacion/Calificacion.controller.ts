@@ -71,4 +71,19 @@ export class CalificacionController {
       throw new InternalServerErrorException('Ocurrió un error inesperado al eliminar el Calificacion.');
     }
   }
+
+  @Post('calificarSesion') // POST /Calificacion/calificarSesion
+  @HttpCode(HttpStatus.CREATED)
+  async calificarSesion(@Body() calificarSesionDto: Calificacion): Promise<Calificacion | null> {
+    try {
+      const result= await this.CalificacionService.calificarSesion(calificarSesionDto);
+      return result;
+    } catch (error) {
+      console.error('Error al calificar la sesión:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo calificar la sesión: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al calificar la sesión.');
+    }
+  }
 }
