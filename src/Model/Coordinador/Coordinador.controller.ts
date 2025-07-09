@@ -1,12 +1,29 @@
-// src/Coordinador/Coordinador.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { Coordinador } from './Coordinador.entity'; 
 import { CoordinadorService } from './Coordinador.service'; 
+import { Roles } from '../Auth/roles.decorator';
+import { JwtRolesGuard } from '../Auth/jwt-roles.guard';
+import { AssignTutorDto } from './dto/assign-tutor.dto';
 
 @Controller('Coordinador') 
 export class CoordinadorController {
 
   constructor(private readonly CoordinadorService: CoordinadorService) {}
+
+  @Post('assign-tutor')
+  @Roles('coordinador')
+  @UseGuards(JwtRolesGuard)
+  @HttpCode(HttpStatus.OK)
+  async assignTutorToMateria(@Body() assignTutorDto: AssignTutorDto) {
+    try {
+      return await this.CoordinadorService.assignTutorToMateria(assignTutorDto);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al asignar el tutor.');
+    }
+  }
 
   @Get('obtenerCoordinadores') // GET /Coordinador/ObtenerCoordinadors 
   @HttpCode(HttpStatus.OK)

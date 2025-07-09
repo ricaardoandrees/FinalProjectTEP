@@ -1,16 +1,40 @@
 // src/Coordinador/Coordinador.service.ts
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm'; // Necesario si usas TypeORM
-import { Repository } from 'typeorm'; // Necesario si usas TypeORM
-import { Coordinador } from './Coordinador.entity'; // Importa tu entidad Coordinador
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Coordinador } from './Coordinador.entity';
+import { Tutor } from '../Tutor/Tutor.entity';
+import { Materia } from '../Materia/Materia.entity';
+import { AssignTutorDto } from './dto/assign-tutor.dto';
 
 @Injectable()
 export class CoordinadorService {
   constructor(
-  @InjectRepository(Coordinador)
+    @InjectRepository(Coordinador)
     private CoordinadorRepository: Repository<Coordinador>,
+    @InjectRepository(Tutor)
+    private tutorRepository: Repository<Tutor>,
+    @InjectRepository(Materia)
+    private materiaRepository: Repository<Materia>,
   ) {}
- 
+
+  async assignTutorToMateria(assignTutorDto: AssignTutorDto): Promise<Tutor> {
+    const { tutorId, materiaId } = assignTutorDto;
+
+    const tutor = await this.tutorRepository.findOne({ where: { id: tutorId } });
+    if (!tutor) {
+      throw new NotFoundException(`Tutor con ID ${tutorId} no encontrado.`);
+    }
+
+    const materia = await this.materiaRepository.findOne({ where: { id: materiaId } });
+    if (!materia) {
+      throw new NotFoundException(`Materia con ID ${materiaId} no encontrada.`);
+    }
+
+    tutor.materia_id = materia;
+    return this.tutorRepository.save(tutor);
+  }
+
   // Ejemplo de métodos CRUD básicos:
 
   async findAll(): Promise<Coordinador[]> {

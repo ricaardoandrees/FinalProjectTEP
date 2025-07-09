@@ -1,18 +1,30 @@
-// src/Usuario/Usuario.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException, UseGuards, Req } from '@nestjs/common';
 import { Usuario } from './Usuario.entity'; 
 import { UsuarioService } from './Usuario.service';
-import { UseGuards } from '@nestjs/common';
 import { JwtRolesGuard } from '../Auth/jwt-roles.guard';
-import { Roles } from '../Auth/roles.decorator';
-import { JwtModule } from '@nestjs/jwt'
-import { AuthModule } from '../Auth/auth.module';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Controller('Usuario') 
 export class UsuarioController {
  
   constructor(private readonly usuarioService: UsuarioService) {}
 
+  @Get('profile')
+  @UseGuards(JwtRolesGuard)
+  @HttpCode(HttpStatus.OK)
+  async getProfile(@Req() req) {
+    // req.user should be populated by the JwtRolesGuard
+    const userId = req.user.sub;
+    return this.usuarioService.getProfile(userId);
+  }
+
+  @Put('profile')
+  @UseGuards(JwtRolesGuard)
+  @HttpCode(HttpStatus.OK)
+  async updateProfile(@Req() req, @Body() updateProfileDto: UpdateProfileDto) {
+    const userId = req.user.sub;
+    return this.usuarioService.updateProfile(userId, updateProfileDto);
+  }
 
   @Get('obtenerUsuarios') // GET /Usuario/ObtenerUsuarios 
   @HttpCode(HttpStatus.OK)
