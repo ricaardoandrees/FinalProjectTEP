@@ -14,14 +14,14 @@ import {LogModule} from "./Model/Log/Log.module";
 import { LoggingInterceptor } from './Model/Log/logging.interceptor';
 import {EstudianteModule} from "./Model/Estudiante/Estudiante.module";
 
-
+//xd
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'postgres',
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: 'Jp30871276!',
+    password: 'Sabrina0405+',
     database: 'Esquemas Tutoria',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,

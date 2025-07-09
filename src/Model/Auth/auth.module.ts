@@ -18,5 +18,6 @@ import { Tutor } from '../Tutor/Tutor.entity';
     ],
     providers: [AuthService],
     controllers: [AuthController],
+    exports: [JwtModule],
 })
 export class AuthModule {} 

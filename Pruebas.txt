@@ -4,11 +4,18 @@ para borrar solo se debe llamar http://localhost:3000/Usuario/borrarUsuario/id(a
 para actualizar solo se debe llamar http://localhost:3000/Usuario/actualizarUsuario/id(aca va cualquier id donde exista un usuario y agregar un body identico al que hay abajo)
 Prueba de obtener los Usuarios en http://localhost:3000/Usuario/obtenerUsuarios
 Prueba de insertar un usuario en http://localhost:3000/Usuario/agregarUsuario
-{
-  "nombre": "Vanessa Nadal",
-  "correo": "vanessa.nadal@example.com",
-  "contrasena": "passwordSegura123" 
-}
+Prueba de mostrar perfil de un usuario http://localhost:3000/Usuario/obtenerPerfilPorCorreo/"correo"
+Prueba para actualizar tu propio perfil de usuario es:
+URL,PUT:http://localhost:3000/Usuario/profile
+Headers:
+  Content-Type: application/json
+  Authorization: Bearer [TU_JWT_TOKEN] (token JWT válido PROPORCIONADO AL ENTRAR ).
+  Body 
+   {
+     "nombre": "Mi Nuevo Nombre",
+     "contrasena": "miNuevaContrasenaSegura"
+   }
+
 
 COORDINADORES
 para borrar solo se debe llamar http://localhost:3000/Coordinador/borrarCoordinador/id(aca va cualquier id donde exista un coordinador)

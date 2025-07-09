@@ -5,7 +5,8 @@ import { ROLES_KEY } from './roles.decorator';
 
 @Injectable()
 export class JwtRolesGuard implements CanActivate {
-    constructor(private reflector: Reflector, private jwtService: JwtService) {}
+    constructor(private reflector: Reflector, 
+        private jwtService: JwtService) {}
 
     canActivate(context: ExecutionContext): boolean {
     const roles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
