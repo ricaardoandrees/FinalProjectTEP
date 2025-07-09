@@ -115,3 +115,16 @@ Prueba de insertar una Calificacion en http://localhost:3000/Calificacion/agrega
 }
 
 para probar el marcado de una sesion como completada: http://localhost:3000/Sesion/marcarSesionCompletada/3/1 (el primer parametro es la id del tutor y el segundo el id de la sesion)
+para probar el comentar y calificar una sesion completada: http://localhost:3000/Calificacion/calificarSesion (necesita un body de este estilo)
+{
+  "sesion_id": 1,
+  "estudiante_id": 2,
+  "tutor_id": 3,
+  "calificacion": 5,
+  "comentario": "Excelente sesión, el tutor explicó muy bien su tema."
+}
+
+para probar el filtrar sesiones por tutor: http://localhost:3000/Sesion/filtarSesionesPorTutor/3 (el parametro es el id del tutor)
+para probar el filtrar sesiones por materia: http://localhost:3000/Sesion/filtarSesionesPorMateria/2 (el parametro es el id de la materia)
+para probar el filtrar sesiones por fecha exacta: http://localhost:3000/Sesion/filtarSesionesPorFecha/2025-07-10 (el parametro es la fecha actual)
+para probar el filtrar sesiones por completada: http://localhost:3000/Sesion/filtarSesionesPorEstado?completada=true (el parametro se cambia entre true o false)

@@ -1,7 +1,7 @@
 // src/Sesion/Sesion.service.ts
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'; // Necesario si usas TypeORM
-import { Repository } from 'typeorm'; // Necesario si usas TypeORM
+import { Repository,Raw  } from 'typeorm'; // Necesario si usas TypeORM
 import { Sesion } from './Sesion.entity'; // Importa tu entidad Sesion
 
 @Injectable()
@@ -63,4 +63,74 @@ export class SesionService {
     }
   }
 
+  async filtarSesionesPorTutor(tutorId: string): Promise<Sesion[]> {
+    if (!tutorId || isNaN(parseInt(tutorId))) {
+      throw new BadRequestException('ID de tutor inválido proporcionado.');
+    }
+    console.log(`Filtrando sesiones por tutor con ID: ${tutorId}...`);
+    const result= await this.SesionRepository.find({
+      where: { tutor_id: { id: parseInt(tutorId) } }, 
+    });
+    if (result && result.length > 0) {
+      return result;
+    } else {
+      console.log(`No se encontraron sesiones para el tutor con ID: ${tutorId}`);
+      throw new BadRequestException(`No se encontraron sesiones para el tutor con ID: ${tutorId}`);
+    }
+  }
+
+  async filtarSesionesPorMateria(materiaId: string): Promise<Sesion[]> {
+    if (!materiaId || isNaN(parseInt(materiaId))) {
+      throw new BadRequestException('ID de materia inválido proporcionado.');
+    }
+    console.log(`Filtrando sesiones por la materia con ID: ${materiaId}...`);
+    const result= await this.SesionRepository.find({
+      where: { materia_id: { id: parseInt(materiaId) } }, 
+    });
+    if (result && result.length > 0) {
+      return result;
+    } else {
+      console.log(`No se encontraron sesiones para la materia con ID: ${materiaId}`);
+      throw new BadRequestException(`No se encontraron sesiones para la materia con ID: ${materiaId}`);
+    }
+  }
+  
+  async filtarSesionesPorFecha(fechaActual: Date): Promise<Sesion[]> {
+    console.log(`Filtrando sesiones por aquellas del dia: ${fechaActual}...`);
+    if (!fechaActual || !(fechaActual instanceof Date)) {
+      throw new BadRequestException('Fecha inválida proporcionada.');
+    }
+    const formattedDate = fechaActual.toISOString().split('T')[0];
+    const result= await this.SesionRepository.find({
+      where: { fecha: Raw(alias => `DATE(${alias}) = :date`, { date: formattedDate }),}, 
+    });
+    if (result && result.length > 0) {
+      return result;
+    } else {
+      console.log(`No se encontraron sesiones para el día: ${formattedDate}`);
+      throw new BadRequestException(`No se encontraron sesiones para el día: ${formattedDate}`);
+    }
+  }
+
+  async filtarSesionesPorEstado(estado: boolean): Promise<Sesion[]> {
+    if (typeof estado !== 'boolean') {
+      throw new BadRequestException('ID de materia inválido proporcionado.');
+    }
+    let respuesta;
+    if (estado === true)
+      respuesta='completadas';
+    else
+      respuesta='no completadas';
+
+    console.log(`Filtrando sesiones por aquellas ${respuesta}...`);
+    const result= await this.SesionRepository.find({
+      where: { completada: estado }, 
+    });
+    if (result && result.length > 0) {
+      return result;
+    } else {
+      console.log(`No se encontraron sesiones : ${respuesta}`);
+      throw new BadRequestException(`No se encontraron sesiones: ${respuesta}`);
+    }
+  }
 }
