@@ -1,12 +1,30 @@
-// src/Usuario/Usuario.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException, UseGuards, Req } from '@nestjs/common';
 import { Usuario } from './Usuario.entity'; 
-import { UsuarioService } from './Usuario.service'; 
+import { UsuarioService } from './Usuario.service';
+import { JwtRolesGuard } from '../Auth/jwt-roles.guard';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Controller('Usuario') 
 export class UsuarioController {
-
+ 
   constructor(private readonly usuarioService: UsuarioService) {}
+
+  @Get('profile')
+  @UseGuards(JwtRolesGuard)
+  @HttpCode(HttpStatus.OK)
+  async getProfile(@Req() req) {
+    // req.user should be populated by the JwtRolesGuard
+    const userId = req.user.sub;
+    return this.usuarioService.getProfile(userId);
+  }
+
+  @Put('profile')
+  @UseGuards(JwtRolesGuard)
+  @HttpCode(HttpStatus.OK)
+  async updateProfile(@Req() req, @Body() updateProfileDto: UpdateProfileDto) {
+    const userId = req.user.sub;
+    return this.usuarioService.updateProfile(userId, updateProfileDto);
+  }
 
   @Get('obtenerUsuarios') // GET /Usuario/ObtenerUsuarios 
   @HttpCode(HttpStatus.OK)
@@ -24,6 +42,21 @@ export class UsuarioController {
   //findOne(@Param('id') id: string): string {
    //return `Esta acción devuelve el Usuario con ID: ${id}`;
   //}
+
+  @Get('obtenerPerfilPorCorreo/:email')
+  @HttpCode(HttpStatus.OK)
+  async getProfileByEmail(@Param('email') email: string): Promise<Usuario | null> {
+    try {
+      const user = await this.usuarioService.findByEmail(email);
+      if (!user) {
+        throw new NotFoundException(`Usuario con correo ${email} no encontrado.`);
+      }
+      return user;
+    } catch (error) {
+      console.error('Error al obtener usuario por correo:', error);
+      throw new InternalServerErrorException('Ocurrió un error inesperado al obtener el usuario por correo.');
+    }
+  }
 
   @Post('agregarUsuario') // POST /Usuario/agregarUsuario
   @HttpCode(HttpStatus.CREATED) 
