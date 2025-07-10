@@ -1,0 +1,230 @@
+
+USUARIOS
+para borrar solo se debe llamar http://localhost:3000/Usuario/borrarUsuario/id(aca va cualquier id donde exista un usuario)
+para actualizar solo se debe llamar http://localhost:3000/Usuario/actualizarUsuario/id(aca va cualquier id donde exista un usuario y agregar un body identico al que hay abajo)
+Prueba de obtener los Usuarios en http://localhost:3000/Usuario/obtenerUsuarios
+Prueba de insertar un usuario en http://localhost:3000/Usuario/agregarUsuario por ejemplo
+{
+  "nombre": "Vanessa Nadal",
+  "correo": "vanessa.nadal@example.com",
+  "contrasena": "passwordSegura123" 
+}
+Prueba de mostrar perfil de un usuario http://localhost:3000/Usuario/obtenerPerfilPorCorreo/"correo"
+Prueba para actualizar tu propio perfil de usuario es:
+URL,PUT:http://localhost:3000/Usuario/profile
+Headers:
+  Authorization: Bearer [TU_JWT_TOKEN] (token JWT válido PROPORCIONADO AL ENTRAR ).
+  Body 
+   {
+     "nombre": "Mi Nuevo Nombre",
+     "contrasena": "miNuevaContrasenaSegura"
+   }
+
+
+  ejemplo de Usuario para el login:
+  {
+  "correo": "oscar.manrique@example.com",
+  "contrasena": "passwordSegura123" 
+  }
+
+EJEMPLOS DE REGISTRO POR ROL 
+  URL: POST http://localhost:3000/Auth/register/coordinador
+Headers:
+  Content-Type: application/json
+Body:
+{
+  "nombre": "Ana Coordinadora",
+  "correo": "ana.coordinadora@email.com",
+  "contrasena": "passwordSegura123",
+  "cedula": "12345678",
+  "departamento": "Ingeniería de Software",
+  "extension_interna": "1234"
+}
+
+URL: POST http://localhost:3000/Auth/register/estudiante
+Headers:
+  Content-Type: application/json
+Body:
+{
+  "nombre": "Carlos Estudiante",
+  "correo": "carlos.estudiante@email.com",
+  "contrasena": "contrasenaSegura456",
+  "cedula": "87654321",
+  "carrera": "Informática",
+  "semestre": 6,
+  "telefono": "04141234567"
+}
+
+URL: POST http://localhost:3000/Auth/register/tutor
+Headers:
+  Content-Type: application/json
+Body:
+{
+  "nombre": "María Tutor",
+  "correo": "maria.tutor@email.com",
+  "contrasena": "tutorClave789",
+  "cedula": "23456789",
+  "profesion": "Docente Universitaria",
+  "experiencia": "10 años en docencia",
+  "telefono": "04241234567"
+}
+
+
+COORDINADORES
+para borrar solo se debe llamar http://localhost:3000/Coordinador/borrarCoordinador/id(aca va cualquier id donde exista un coordinador)
+para actualizar solo se debe llamar http://localhost:3000/Coordinador/actualizarCoordinador/id(aca va cualquier id donde exista un coordinador y agregar un body identico al que hay abajo pero sin el id)
+Prueba de iobtener los Coordinadores en http://localhost:3000/Coordinador/obtenerCoordinadores
+Prueba de insertar un Coordinador en http://localhost:3000/Coordinador/agregarCoordinador
+{
+      "id": 1,
+      "cedula": "30871276",
+      "departamento": "Programacion",
+      "extension_interna": "orientada a objetos"
+}
+ 
+LOGS
+para borrar solo se debe llamar http://localhost:3000/Log/borrarLog/id(aca va cualquier id donde exista un log)
+para actualizar solo se debe llamar http://localhost:3000/Log/actualizarLog/id(aca va cualquier id donde exista un Log y agregar un body identico al que hay abajo)
+Prueba de obtener los logs en http://localhost:3000/Log/obtenerLogs
+Prueba de insertar un log en http://localhost:3000/Log/agregarLog
+{
+  "usuario_id": 3,
+  "accion": "borrar un usuario",
+  "ruta": "/auth/login",
+  "metodo": "DELETE"
+}
+
+MATERIAS
+para borrar solo se debe llamar http://localhost:3000/Materia/borrarMateria/id(aca va cualquier id donde exista una materia)
+para actualizar solo se debe llamar http://localhost:3000/Materia/actualizarMateria/id(aca va cualquier id donde exista una materia y agregar un body identico al que hay abajo)
+Prueba de obtener las materias en http://localhost:3000/Materia/obtenerMaterias
+Prueba de insertar unA materia en http://localhost:3000/Materia/agregarMateria
+{
+  "nombre": "Programación Orientada a Objetos",
+  "codigo": "POO-2025"
+}
+
+
+ESTUDIANTE 
+para borrar solo se debe llamar http://localhost:3000/Estudiante/borrarEstudiante/id(aca va cualquier id donde exista un Estudiante)
+para actualizar solo se debe llamar http://localhost:3000/Estudiante/actualizarEstudiante/id(aca va cualquier id donde exista un Estudiante y agregar un body identico al que hay abajo pero sin el id)
+Prueba de obtener los Estudiantes en http://localhost:3000/Estudiante/obtenerEstudiantes
+Prueba de insertar un Estudiante en http://localhost:3000/Estudiante/agregarEstudiante
+{
+  "id": 2,
+  "cedula": "30554327",
+  "carrera": "Ingeniería de Sistemas",
+  "semestre": 5,
+  "telefono": "0412-1234567"
+}
+
+TUTOR 
+para borrar solo se debe llamar http://localhost:3000/Tutor/borrarTutor/id(aca va cualquier id donde exista un Tutores)
+para actualizar solo se debe llamar http://localhost:3000/Tutor/actualizarTutor/id(aca va cualquier id donde exista un Tutores y agregar un body identico al que hay abajo pero sin el id)
+Prueba de obtener los Tutores en http://localhost:3000/Tutor/obtenerTutores
+Prueba de insertar un Tutor en http://localhost:3000/Tutor/agregarTutor
+{
+  "id": 3,
+  "cedula": "31839514",
+  "profesion": "Profesor",
+  "experiencia": "Más de 10 años de experiencia en docencia y desarrollo de software.",
+  "telefono": "0424-7654321",
+  "materia_id": 2
+}
+
+SOLICITUDES 
+para borrar solo se debe llamar http://localhost:3000/Solicitud/borrarSolicitud/id(aca va cualquier id donde exista una Solicitud)
+para actualizar solo se debe llamar http://localhost:3000/Solicitud/actualizarSolicitud/id(aca va cualquier id donde exista una Solicitud y agregar un body identico al que hay abajo)
+Prueba de obtener las Solicitudes  en http://localhost:3000/Solicitud/obtenerSolicitudes
+Prueba de que el estudiante puede insertar una Solicitud en http://localhost:3000/Solicitud/agregarSolicitud
+{
+  "estudiante_id": 2,
+  "materia_id": 2,
+  "fecha_solicitada": "2025-07-10",
+  "hora_solicitada": "15:30:00",
+  "estado": "PENDIENTE",
+  "tutor_id": 3
+}
+
+SESIONES 
+para borrar solo se debe llamar http://localhost:3000/Sesion/borrarSesion/id (aca va cualquier id donde exista una Sesion)
+para actualizar solo se debe llamar http://localhost:3000/Sesion/actualizarSesion/id (aca va cualquier id donde exista una Sesion y agregar un body identico al que hay abajo)
+Prueba de obtener las Sesiones  en http://localhost:3000/Sesion/obtenerSesiones
+Prueba de insertar una Sesion en http://localhost:3000/Sesion/agregarSesion
+{
+  "solicitud_id": 1,
+  "tutor_id": 3,
+  "estudiante_id": 2,
+  "materia_id": 2,
+  "fecha": "2025-07-10",
+  "hora": "15:30:00",
+  "completada": false
+}
+
+CALIFICACIONES 
+para borrar solo se debe llamar http://localhost:3000/Calificacion/borrarCalificacion/id (aca va cualquier id donde exista una Calificacion)
+para actualizar solo se debe llamar http://localhost:3000/Calificacion/actualizarCalificacion/id (aca va cualquier id donde exista una Calificacion y agregar un body identico al que hay abajo)
+Prueba de obtener las Calificaciones  en http://localhost:3000/Calificacion/obtenerCalificaciones
+Prueba de insertar una Calificacion en http://localhost:3000/Calificacion/agregarCalificacion
+{
+  "sesion_id": 1,
+  "estudiante_id": 2,
+  "tutor_id": 3,
+  "calificacion": 5,
+  "comentario": "Excelente sesión, el tutor explicó muy bien su tema."
+}
+
+para probar el marcado de una sesion como completada: http://localhost:3000/Sesion/marcarSesionCompletada/3/1 (el primer parametro es la id del tutor y el segundo el id de la sesion)
+para probar el comentar y calificar una sesion completada: http://localhost:3000/Calificacion/calificarSesion (necesita un body de este estilo)
+{
+  "sesion_id": 1,
+  "estudiante_id": 2,
+  "tutor_id": 3,
+  "calificacion": 5,
+  "comentario": "Excelente sesión, el tutor explicó muy bien su tema."
+}
+
+ESTOS SOLO LOS PUEDE HACER EL COORDINADOR (y son get)
+para probar el filtrar sesiones por tutor: http://localhost:3000/Sesion/filtarSesionesPorTutor/3 (el parametro es el id del tutor)
+para probar el filtrar sesiones por materia: http://localhost:3000/Sesion/filtarSesionesPorMateria/2 (el parametro es el id de la materia)
+para probar el filtrar sesiones por fecha exacta: http://localhost:3000/Sesion/filtarSesionesPorFecha/2025-07-10 (el parametro es la fecha actual)
+para probar el filtrar sesiones por completada: http://localhost:3000/Sesion/filtarSesionesPorEstado?completada=true (el parametro se cambia entre true o false)
+para probar el obtener cantidad de sesiones por tutor: http://localhost:3000/Sesion/sesionesPorTutor
+para probar el obtener cantidad de sesiones por materia: http://localhost:3000/Sesion/sesionesPorMateria
+
+
+
+Para probar que el tutor pueda aceptar o rechazar:
+URL: http://localhost:3000/Solicitud/cambiarEstadoSolicitud/:id 
+Método: PUT
+Headers:
+Authorization: Bearer <TU_TOKEN_DE_TUTOR> (Necesitas un token JWT de un usuario con rol 'Tutor').
+Content-Type: application/json
+  Body (JSON):
+  {
+    "estado": "nuevo_estado_aqui"
+  }
+
+=======
+PRUEBA DE OBTENER PERFIL: GET http://localhost:3000/Usuario/profile
+
+Prueba para actualizar tu propio perfil de usuario es:
+URL,PUT:http://localhost:3000/Usuario/profile
+Headers:
+  Authorization: Bearer [TU_JWT_TOKEN] (token JWT válido PROPORCIONADO AL ENTRAR ).
+  Body 
+   {
+     "nombre": "Mi Nuevo Nombre",
+     "contrasena": "miNuevaContrasenaSegura"
+   }
+  
+PRUEBA DE MARCAR SESION COMO COMPLETADA (solo puede hacerlo el tutor): http://localhost:3000/Sesion/marcarSesionCompletada/3/3 (el primero es el id del tutor el segundo es el id de la sesion)
+PRUEBA DE CALIFICAR UNA SESION: http://localhost:3000/Calificacion/calificarSesion body de ejemplo:
+{
+  "sesion_id": 1,
+  "estudiante_id": 2,
+  "tutor_id": 3,
+  "calificacion": 5,
+  "comentario": "Excelente sesión, el tutor horrible su tema, lo odio."
+}
+
