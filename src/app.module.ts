@@ -21,7 +21,7 @@ import {EstudianteModule} from "./Model/Estudiante/Estudiante.module";
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: 'Sabrina0405+',
+    password: 'Jp30871276!',
     database: 'Esquemas Tutoria',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,

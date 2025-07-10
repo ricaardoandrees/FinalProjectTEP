@@ -10,7 +10,6 @@ export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
   @Get('profile')
-  @UseGuards(JwtRolesGuard)
   @HttpCode(HttpStatus.OK)
   async getProfile(@Req() req) {
     // req.user should be populated by the JwtRolesGuard
@@ -19,11 +18,18 @@ export class UsuarioController {
   }
 
   @Put('profile')
-  @UseGuards(JwtRolesGuard)
   @HttpCode(HttpStatus.OK)
   async updateProfile(@Req() req, @Body() updateProfileDto: UpdateProfileDto) {
-    const userId = req.user.sub;
-    return this.usuarioService.updateProfile(userId, updateProfileDto);
+    try{
+          const userId = req.user.sub;
+          const result= this.usuarioService.updateProfile(userId, updateProfileDto);
+          console.log(result);
+          return result;
+    }
+    catch (error) {
+      console.error('Error al obtener usuarios:', error);
+      throw new InternalServerErrorException('Ocurrió un error inesperado al obtener los usuarios.');
+    }
   }
 
   @Get('obtenerUsuarios') // GET /Usuario/ObtenerUsuarios 

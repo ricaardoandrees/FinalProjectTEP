@@ -8,7 +8,6 @@ Prueba de mostrar perfil de un usuario http://localhost:3000/Usuario/obtenerPerf
 Prueba para actualizar tu propio perfil de usuario es:
 URL,PUT:http://localhost:3000/Usuario/profile
 Headers:
-  Content-Type: application/json
   Authorization: Bearer [TU_JWT_TOKEN] (token JWT válido PROPORCIONADO AL ENTRAR ).
   Body 
    {

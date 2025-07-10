@@ -72,7 +72,7 @@ export class AuthService {
             usuario.correo = correo;
             usuario.contrasena = contrasena;
 
-            await transactionalEntityManager.save(usuario);
+            usuario = await transactionalEntityManager.save(usuario);
 
             const coordinador = new Coordinador();
             coordinador.id = usuario.id;
@@ -108,7 +108,7 @@ export class AuthService {
             usuario.correo = correo;
             usuario.contrasena = contrasena;
 
-            await transactionalEntityManager.save(usuario);
+            usuario = await transactionalEntityManager.save(usuario);
 
             const estudiante = new Estudiante();
             estudiante.id = usuario.id;
@@ -145,7 +145,7 @@ export class AuthService {
             usuario.correo = correo;
             usuario.contrasena = contrasena;
 
-            await transactionalEntityManager.save(usuario);
+            usuario = await transactionalEntityManager.save(usuario);
 
             const tutor = new Tutor();
             tutor.id = usuario.id;
