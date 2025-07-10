@@ -11,9 +11,8 @@ import { Usuario } from '../Usuario/Usuario.entity';
 @Entity({ name: 'log' })
 export class Log {
     @PrimaryGeneratedColumn()
-    id: number;
-
-    // Relación correcta: no @Column, sí @JoinColumn
+    id: number; 
+    
     @ManyToOne(() => Usuario, { nullable: true, eager: true })
     @JoinColumn({ name: 'usuario_id' })
     usuario_id: Usuario;

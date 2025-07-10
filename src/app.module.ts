@@ -13,6 +13,9 @@ import {CalificacionModule} from "./Model/Calificacion/Calificacion.module";
 import {LogModule} from "./Model/Log/Log.module";
 import { LoggingInterceptor } from './Model/Log/logging.interceptor';
 import {EstudianteModule} from "./Model/Estudiante/Estudiante.module";
+import { JwtRolesGuard } from './Model/Auth/jwt-roles.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './Model/Auth/auth.module';
 
 //xd
 @Module({
@@ -26,8 +29,11 @@ import {EstudianteModule} from "./Model/Estudiante/Estudiante.module";
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
   }),MateriaModule,UsuarioModule,TutorModule,
-    CoordinadorModule,SolicitudModule,SesionModule,CalificacionModule,LogModule,EstudianteModule],
+    CoordinadorModule,SolicitudModule,SesionModule,CalificacionModule,LogModule,EstudianteModule,AuthModule],
   controllers: [AppController],
-  providers: [AppService, {provide: APP_INTERCEPTOR, useClass: LoggingInterceptor}],
+  providers: [AppService, 
+    {provide: APP_INTERCEPTOR, useClass: LoggingInterceptor},
+    {provide: APP_GUARD, useClass: JwtRolesGuard}
+  ],
 })
 export class AppModule {}
