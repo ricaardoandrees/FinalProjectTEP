@@ -1,7 +1,9 @@
 // src/Calificacion/Calificacion.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { Calificacion } from './Calificacion.entity'; 
 import { CalificacionService } from './Calificacion.service'; 
+import { JwtRolesGuard } from '../Auth/jwt-roles.guard';
+import { Roles } from '../Auth/roles.decorator';
 
 @Controller('Calificacion') 
 export class CalificacionController {
@@ -72,12 +74,14 @@ export class CalificacionController {
     }
   }
 
+  @UseGuards(JwtRolesGuard)
+  @Roles('Estudiante')
   @Post('calificarSesion') // POST /Calificacion/calificarSesion
   @HttpCode(HttpStatus.CREATED)
-  async calificarSesion(@Body() calificarSesionDto: Calificacion): Promise<Calificacion | null> {
+  async calificarSesion(@Body() calificarSesionDto: Calificacion): Promise<String | null> {
     try {
       const result= await this.CalificacionService.calificarSesion(calificarSesionDto);
-      return result;
+      return 'La sesión ha sido calificada exitosamente.';
     } catch (error) {
       console.error('Error al calificar la sesión:', error);
       if (error instanceof Error) {
