@@ -15,6 +15,55 @@ Headers:
      "contrasena": "miNuevaContrasenaSegura"
    }
 
+   
+  ejemplo de Usuario para el login:
+  {
+  "correo": "oscar.manrique@example.com",
+  "contrasena": "passwordSegura123" 
+  }
+
+EJEMPLOS DE REGISTRO POR ROL 
+  URL: POST http://localhost:3000/Auth/register/coordinador
+Headers:
+  Content-Type: application/json
+Body:
+{
+  "nombre": "Ana Coordinadora",
+  "correo": "ana.coordinadora@email.com",
+  "contrasena": "passwordSegura123",
+  "cedula": "12345678",
+  "departamento": "Ingeniería de Software",
+  "extension_interna": "1234"
+}
+
+URL: POST http://localhost:3000/Auth/register/estudiante
+Headers:
+  Content-Type: application/json
+Body:
+{
+  "nombre": "Carlos Estudiante",
+  "correo": "carlos.estudiante@email.com",
+  "contrasena": "contrasenaSegura456",
+  "cedula": "87654321",
+  "carrera": "Informática",
+  "semestre": 6,
+  "telefono": "04141234567"
+}
+
+URL: POST http://localhost:3000/Auth/register/tutor
+Headers:
+  Content-Type: application/json
+Body:
+{
+  "nombre": "María Tutor",
+  "correo": "maria.tutor@email.com",
+  "contrasena": "tutorClave789",
+  "cedula": "23456789",
+  "profesion": "Docente Universitaria",
+  "experiencia": "10 años en docencia",
+  "telefono": "04241234567"
+}
+
 
 COORDINADORES
 para borrar solo se debe llamar http://localhost:3000/Coordinador/borrarCoordinador/id(aca va cualquier id donde exista un coordinador)
