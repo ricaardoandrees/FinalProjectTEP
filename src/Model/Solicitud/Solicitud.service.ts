@@ -3,12 +3,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm'; // Necesario si usas TypeORM
 import { Repository } from 'typeorm'; // Necesario si usas TypeORM
 import { Solicitud } from './Solicitud.entity'; // Importa tu entidad Solicitud
+import { SesionService } from '../Sesion/Sesion.service'; // Importa SesionService
 
 @Injectable()
 export class SolicitudService {
   constructor(
   @InjectRepository(Solicitud)
     private SolicitudRepository: Repository<Solicitud>,
+    private sesionService: SesionService,
   ) {}
  
   // Ejemplo de métodos CRUD básicos:
@@ -50,6 +52,11 @@ export class SolicitudService {
       return null;
     }
     solicitud.estado = nuevoEstado;
-    return this.SolicitudRepository.save(solicitud);
+    const updatedSolicitud = await this.SolicitudRepository.save(solicitud);
+
+    if (nuevoEstado.toLowerCase() === 'aceptada') {
+      await this.sesionService.crearSesionporSolicitud(updatedSolicitud.id);
+    }
+    return updatedSolicitud;
   }
 }

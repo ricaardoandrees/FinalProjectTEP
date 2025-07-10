@@ -83,7 +83,7 @@ SOLICITUDES
 para borrar solo se debe llamar http://localhost:3000/Solicitud/borrarSolicitud/id(aca va cualquier id donde exista una Solicitud)
 para actualizar solo se debe llamar http://localhost:3000/Solicitud/actualizarSolicitud/id(aca va cualquier id donde exista una Solicitud y agregar un body identico al que hay abajo)
 Prueba de obtener las Solicitudes  en http://localhost:3000/Solicitud/obtenerSolicitudes
-Prueba de insertar una Solicitud en http://localhost:3000/Solicitud/agregarSolicitud
+Prueba de que el estudiante puede insertar una Solicitud en http://localhost:3000/Solicitud/agregarSolicitud
 {
   "estudiante_id": 2,
   "materia_id": 2,
@@ -137,3 +137,93 @@ para probar el filtrar sesiones por fecha exacta: http://localhost:3000/Sesion/f
 para probar el filtrar sesiones por completada: http://localhost:3000/Sesion/filtarSesionesPorEstado?completada=true (el parametro se cambia entre true o false)
 para probar el obtener cantidad de sesiones por tutor: http://localhost:3000/Sesion/sesionesPorTutor
 para probar el obtener cantidad de sesiones por materia: http://localhost:3000/Sesion/sesionesPorMateria
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Para probar que el tutor pueda aceptar o rechazar:
+URL: http://localhost:3000/Solicitud/cambiarEstadoSolicitud/:id 
+Método: PUT
+Headers:
+Authorization: Bearer <TU_TOKEN_DE_TUTOR> (Necesitas un token JWT de un usuario con rol 'Tutor').
+Content-Type: application/json
+  Body (JSON):
+  {
+    "estado": "nuevo_estado_aqui"
+  }
+
