@@ -9,7 +9,8 @@ import { Roles } from '../Auth/roles.decorator';
 export class SolicitudController {
 
   constructor(private readonly SolicitudService: SolicitudService) {}
-
+  @UseGuards(JwtRolesGuard)
+  @Roles('Tutor')
   @Get('obtenerSolicitudes') // GET /Solicitud/ObtenerSolicituds 
   @HttpCode(HttpStatus.OK)
   async findAll(): Promise<Solicitud[]> {
@@ -72,6 +73,26 @@ export class SolicitudController {
         throw new NotFoundException(`Solicitud con ID ${id} no encontrado.`);
       }
       throw new InternalServerErrorException('Ocurrió un error inesperado al eliminar el Solicitud.');
+    }
+  }
+
+  @UseGuards(JwtRolesGuard)
+  @Roles('Tutor')
+  @Put('cambiarEstadoSolicitud/:id')
+  @HttpCode(HttpStatus.OK)
+  async cambiarEstadoSolicitud(@Param('id') id: string, @Body('estado') nuevoEstado: string): Promise<Solicitud | null> {
+    try {
+      const updatedSolicitud = await this.SolicitudService.cambiarEstadoSolicitud(id, nuevoEstado);
+      if (!updatedSolicitud) {
+        throw new NotFoundException(`Solicitud con ID ${id} no encontrado.`);
+      }
+      return updatedSolicitud;
+    } catch (error) {
+      console.error('Error al cambiar estado de Solicitud:', error);
+      if (error instanceof Error) {
+        throw new BadRequestException(`No se pudo cambiar el estado de la Solicitud: ${error.message}`);
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al cambiar el estado de la Solicitud.');
     }
   }
 }

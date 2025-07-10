@@ -43,4 +43,13 @@ export class SolicitudService {
     await this.SolicitudRepository.delete(id);
    console.log(`Eliminando Solicitud con ID: ${id} desde el servicio...`);
   }
+
+  async cambiarEstadoSolicitud(id: string, nuevoEstado: string): Promise<Solicitud | null> {
+    const solicitud = await this.SolicitudRepository.findOne({ where: { id: parseInt(id) } });
+    if (!solicitud) {
+      return null;
+    }
+    solicitud.estado = nuevoEstado;
+    return this.SolicitudRepository.save(solicitud);
+  }
 }
