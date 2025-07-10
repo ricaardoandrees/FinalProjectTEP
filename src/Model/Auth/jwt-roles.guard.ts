@@ -24,7 +24,7 @@ export class JwtRolesGuard implements CanActivate {
         if (roles.includes(payload.rol)) return true;
         throw new ForbiddenException('No tienes permisos para acceder a este recurso');
     } catch (e) {
-            throw new UnauthorizedException('Token inválido o expirado');
+            throw new UnauthorizedException(`Token invalido: ${e.message}`);
         }
     }
 } 

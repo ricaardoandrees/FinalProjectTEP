@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
 import { Usuario } from './Usuario.entity';
@@ -39,20 +39,47 @@ export class UsuarioService {
     return usuario; // Should not happen if every user has a role
   }
 
-  async updateProfile(userId: number, updateProfileDto: UpdateProfileDto): Promise<Usuario> {
-    const usuario = await this.usuarioRepository.findOne({ where: { id: userId } });
-    if (!usuario) {
-      throw new NotFoundException(`Usuario con ID ${userId} no encontrado.`);
+ async updateProfile(userId: number, updateProfileDto: UpdateProfileDto): Promise<Usuario | null> {
+    const fieldsToUpdate: { nombre?: string; contrasena?: string } = {};
+
+    // Desestructurar updateProfileDto para mayor claridad y manejar undefined
+    const { nombre, contrasena } = updateProfileDto;
+
+    if (nombre !== undefined) { // Usamos !== undefined para incluir cadenas vacías si se desea actualizar a ""
+      fieldsToUpdate.nombre = nombre;
+    }
+    if (contrasena !== undefined) {
+      // ¡IMPORTANTE! Aquí debes hashear la contraseña ANTES de asignarla a fieldsToUpdate.contrasena
+      // Ejemplo: fieldsToUpdate.contrasena = await bcrypt.hash(contrasena, 10);
+      fieldsToUpdate.contrasena = contrasena; // Placeholder: Asegúrate de hashear esto en tu implementación real
     }
 
-    if (updateProfileDto.nombre) {
-      usuario.nombre = updateProfileDto.nombre;
-    }
-    if (updateProfileDto.contrasena) {
-      usuario.contrasena = updateProfileDto.contrasena; // Remember to hash this
+    // Si no hay campos para actualizar, lanzar BadRequestException
+    if (Object.keys(fieldsToUpdate).length === 0) {
+      throw new BadRequestException('No se proporcionaron datos válidos para actualizar el perfil.');
     }
 
-    return this.usuarioRepository.save(usuario);
+    console.log('1 - updateProfileDto recibido:', updateProfileDto);
+    console.log('2 - fieldsToUpdate construido:', fieldsToUpdate);
+    console.log('3 - Ejecutando actualización con TypeORM update()');
+    const updateResult = await this.usuarioRepository.update(userId, fieldsToUpdate);
+    console.log('3 - Resultado de la actualización:', updateResult);
+
+    // Verificar si el usuario fue realmente afectado por la actualización
+    if (updateResult.affected === 0) {
+      // Intentamos encontrar el usuario para determinar si no existía o si no hubo cambios.
+      const usuarioExistente = await this.usuarioRepository.findOne({ where: { id: userId } });
+      if (!usuarioExistente) {
+        throw new NotFoundException(`Usuario con ID ${userId} no encontrado.`);
+      }
+      // Si el usuario existe pero updateResult.affected es 0, significa que los valores proporcionados eran idénticos a los existentes.
+      // En este caso, simplemente devolvemos el usuario existente.
+      return usuarioExistente;
+    }
+
+    // Si se realizó la actualización, recuperamos la entidad actualizada para devolverla.
+    // Esto es necesario porque .update() no devuelve la entidad actualizada, solo el resultado de la operación.
+    return this.usuarioRepository.findOne({ where: { id: userId } });
   }
  
   // Ejemplo de métodos CRUD básicos:

@@ -1,7 +1,9 @@
 // src/Materia/Materia.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { Materia } from './Materia.entity'; 
 import { MateriaService } from './Materia.service'; 
+import { JwtRolesGuard } from '../Auth/jwt-roles.guard';
+import { Roles } from '../Auth/roles.decorator';
 
 @Controller('Materia') 
 export class MateriaController {
@@ -25,6 +27,8 @@ export class MateriaController {
    //return `Esta acción devuelve el Materia con ID: ${id}`;
   //}
 
+  @UseGuards(JwtRolesGuard)
+  @Roles('Coordinador')
   @Post('agregarMateria') // POST /Materia/agregarMateria
   @HttpCode(HttpStatus.CREATED) 
   async create(@Body() createMateriaDto: Materia): Promise<Materia> {

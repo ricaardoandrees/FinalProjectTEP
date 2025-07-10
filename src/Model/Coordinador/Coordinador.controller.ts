@@ -4,19 +4,20 @@ import { CoordinadorService } from './Coordinador.service';
 import { Roles } from '../Auth/roles.decorator';
 import { JwtRolesGuard } from '../Auth/jwt-roles.guard';
 import { AssignTutorDto } from './dto/assign-tutor.dto';
+import { UpdateCoordinadorDto } from './dto/update-coordinador.dto';
 
 @Controller('Coordinador') 
 export class CoordinadorController {
 
   constructor(private readonly CoordinadorService: CoordinadorService) {}
 
-  @Post('assign-tutor')
-  @Roles('coordinador')
+  @Post('asignar/tutor')
+  @Roles('Coordinador')
   @UseGuards(JwtRolesGuard)
   @HttpCode(HttpStatus.OK)
-  async assignTutorToMateria(@Body() assignTutorDto: AssignTutorDto) {
+  async asignarTutorMateria(@Body() asignacionTutor: AssignTutorDto) {
     try {
-      return await this.CoordinadorService.assignTutorToMateria(assignTutorDto);
+      return await this.CoordinadorService.assignTutorToMateria(asignacionTutor);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
@@ -58,18 +59,27 @@ export class CoordinadorController {
 
   @Put('actualizarCoordinador/:id') // PUT /Coordinador/actualizarCoordinador/:id
   @HttpCode(HttpStatus.OK) 
-  async update(@Param('id') id: string, @Body() updateCoordinadorDto: Coordinador): Promise<Coordinador | null> {
+  async update(@Param('id') id: string, @Body() updateCoordinadorDto: UpdateCoordinadorDto): Promise<Coordinador | null> {
     try {
       const updatedCoordinador = await this.CoordinadorService.update(id, updateCoordinadorDto);
       if (!updatedCoordinador) {
         throw new NotFoundException(`Coordinador con ID ${id} no encontrado.`);
       }
       return updatedCoordinador;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error al actualizar Coordinador:', error);
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      // Catch specific ORM errors if known, e.g., TypeORM's EntityNotFoundError
+      // if (error.name === 'EntityNotFoundError') {
+      //   throw new NotFoundException(`Coordinador con ID ${id} no encontrado.`);
+      // }
+      // If the error is an instance of a generic Error, extract its message
       if (error instanceof Error) {
         throw new BadRequestException(`No se pudo actualizar el Coordinador: ${error.message}`);
       }
+      // For any other unexpected errors, throw a generic internal server error
       throw new InternalServerErrorException('Ocurrió un error inesperado al actualizar el Coordinador.');
     }
   }
