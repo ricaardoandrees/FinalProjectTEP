@@ -33,7 +33,7 @@ import { AuthModule } from './Model/Auth/auth.module';
   controllers: [AppController],
   providers: [AppService, 
     {provide: APP_INTERCEPTOR, useClass: LoggingInterceptor},
-    {provide: APP_GUARD, useClass: JwtRolesGuard}
+    
   ],
 })
 export class AppModule {}
