@@ -45,13 +45,13 @@ export class MateriaController {
 
   @Put('actualizarMateria/:id') // PUT /Materia/actualizarMateria/:id
   @HttpCode(HttpStatus.OK) 
-  async update(@Param('id') id: string, @Body() updateMateriaDto: Materia): Promise<Materia | null> {
+  async update(@Param('id') id: string, @Body() updateMateriaDto: Materia): Promise<String | null> {
     try {
       const updatedMateria = await this.MateriaService.update(id, updateMateriaDto);
       if (!updatedMateria) {
         throw new NotFoundException(`Materia con ID ${id} no encontrado.`);
       }
-      return updatedMateria;
+      return 'La materia ha sido actualizada exitosamente.';
     } catch (error) {
       console.error('Error al actualizar Materia:', error);
       if (error instanceof Error) {
