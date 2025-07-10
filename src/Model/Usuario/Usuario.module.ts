@@ -11,8 +11,7 @@ import { AuthModule } from '../Auth/auth.module';
 
     imports: [TypeOrmModule.forFeature([Usuario]),AuthModule],
     providers: [UsuarioService,JwtRolesGuard], 
-    controllers: [UsuarioController],            
-
-         
+    controllers: [UsuarioController],
+    exports: [TypeOrmModule.forFeature([Usuario]), UsuarioService]         
 })
 export class UsuarioModule {}

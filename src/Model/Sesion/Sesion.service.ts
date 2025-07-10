@@ -6,6 +6,7 @@ import { Sesion } from './Sesion.entity'; // Importa tu entidad Sesion
 import { Tutor } from '../Tutor/Tutor.entity'; // Importa tu entidad Tutor si la necesitas
 import { Materia } from '../Materia/Materia.entity'; // Importa tu entidad Materia si la necesitas
 import { Usuario } from '../Usuario/Usuario.entity';
+import { Solicitud } from '../Solicitud/Solicitud.entity';
 
 @Injectable()
 export class SesionService {
@@ -16,8 +17,10 @@ export class SesionService {
     private TutorRepository: Repository<Tutor>,
     @InjectRepository(Materia) 
     private MateriaRepository: Repository<Materia>,
-    @InjectRepository(Materia) 
-    private UsuarioRepository: Repository<Usuario>
+    @InjectRepository(Usuario) 
+    private UsuarioRepository: Repository<Usuario>,
+    @InjectRepository(Solicitud)
+    private SolicitudRepository: Repository<Solicitud>
   ) {}
  
   // Ejemplo de métodos CRUD básicos:
@@ -185,6 +188,29 @@ export class SesionService {
 
     console.log('Estadísticas de sesiones por materia (con nombre) calculadas:', resultadoFormateado);
     return resultadoFormateado;
+  }
+
+  async crearSesionporSolicitud(solicitudId: number): Promise<Sesion> {
+    const solicitud = await this.SolicitudRepository.findOne({ where: { id: solicitudId }, relations: ['estudiante_id', 'materia_id', 'tutor_id'] });
+
+    if (!solicitud) {
+      throw new BadRequestException(`No se encontró la solicitud con ID: ${solicitudId}`);
+    }
+
+    if (!solicitud.tutor_id) {
+      throw new BadRequestException(`La solicitud con ID: ${solicitudId} no tiene un tutor asignado.`);
+    }
+
+    const nuevaSesion = this.SesionRepository.create({
+      estudiante_id: solicitud.estudiante_id,
+      materia_id: solicitud.materia_id,
+      tutor_id: solicitud.tutor_id,
+      fecha: solicitud.fecha_solicitada,
+      hora: solicitud.hora_solicitada,
+      completada: false,
+    });
+
+    return this.SesionRepository.save(nuevaSesion);
   }
 
 }
