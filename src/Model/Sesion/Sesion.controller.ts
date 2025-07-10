@@ -177,4 +177,18 @@ export class SesionController {
       throw new InternalServerErrorException('Ocurrió un error inesperado al obtener la cantidad de sesiones por cada materia.');
     }
   }
+
+  @Post('crearSesionPorSolicitud')
+  @HttpCode(HttpStatus.CREATED)
+  async crearSesionPorSolicitud(@Body('solicitudId') solicitudId: number): Promise<Sesion> {
+    try {
+      return await this.SesionService.crearSesionporSolicitud(solicitudId);
+    } catch (error) {
+      console.error('Error al crear sesión por solicitud:', error);
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Ocurrió un error inesperado al crear la sesión por solicitud.');
+    }
+  }
 }
