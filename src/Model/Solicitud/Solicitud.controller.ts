@@ -1,13 +1,16 @@
 // src/Solicitud/Solicitud.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body,HttpCode, HttpStatus,NotFoundException,BadRequestException,InternalServerErrorException, UseGuards } from '@nestjs/common';
 import { Solicitud } from './Solicitud.entity'; 
 import { SolicitudService } from './Solicitud.service'; 
+import { JwtRolesGuard } from '../Auth/jwt-roles.guard';
+import { Roles } from '../Auth/roles.decorator';
 
 @Controller('Solicitud') 
 export class SolicitudController {
 
   constructor(private readonly SolicitudService: SolicitudService) {}
-
+  @UseGuards(JwtRolesGuard)
+  @Roles('Tutor')
   @Get('obtenerSolicitudes') // GET /Solicitud/ObtenerSolicituds 
   @HttpCode(HttpStatus.OK)
   async findAll(): Promise<Solicitud[]> {
@@ -24,7 +27,8 @@ export class SolicitudController {
   //findOne(@Param('id') id: string): string {
    //return `Esta acción devuelve el Solicitud con ID: ${id}`;
   //}
-
+  @UseGuards(JwtRolesGuard)
+  @Roles('Estudiante')
   @Post('agregarSolicitud') // POST /Solicitud/agregarSolicitud
   @HttpCode(HttpStatus.CREATED) 
   async create(@Body() createSolicitudDto: Solicitud): Promise<Solicitud> {
