@@ -9,7 +9,9 @@ export class LoggingInterceptor implements NestInterceptor {
 
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const req = context.switchToHttp().getRequest();
-        const user = req.user || undefined;
+        const userId = req.user?.sub || 'unauthenticated';
+        console.log(`id de usuario: ${userId}`);
+        const user = userId ? { id: userId } : undefined;
         const ruta = req.route?.path || req.url;
         const metodo = req.method;
         const accion = `Acceso a ${ruta}`;

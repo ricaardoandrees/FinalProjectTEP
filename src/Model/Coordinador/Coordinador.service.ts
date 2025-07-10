@@ -6,6 +6,7 @@ import { Coordinador } from './Coordinador.entity';
 import { Tutor } from '../Tutor/Tutor.entity';
 import { Materia } from '../Materia/Materia.entity';
 import { AssignTutorDto } from './dto/assign-tutor.dto';
+import { UpdateCoordinadorDto } from './dto/update-coordinador.dto';
 
 @Injectable()
 export class CoordinadorService {
@@ -55,7 +56,7 @@ export class CoordinadorService {
     return this.CoordinadorRepository.save(newCoordinador);
   }
 
-  async update(id: string, Coordinador: Coordinador): Promise<Coordinador | null> {
+  async update(id: string, Coordinador: UpdateCoordinadorDto): Promise<Coordinador | null> {
     // Lógica para actualizar una Coordinador existente
     await this.CoordinadorRepository.update(id, Coordinador);
     console.log(`Actualizando Coordinador con ID: ${id} y datos: ${JSON.stringify(Coordinador)} desde el servicio...`);
