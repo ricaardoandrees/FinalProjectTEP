@@ -24,7 +24,7 @@ import { AuthModule } from './Model/Auth/auth.module';
     host: 'localhost',
     port: 5432,
     username: 'postgres',
-    password: 'Jp30871276!',
+    password: 'admin',
     database: 'Esquemas Tutoria',
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
     synchronize: true,
