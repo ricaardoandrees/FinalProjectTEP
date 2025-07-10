@@ -15,7 +15,7 @@ Headers:
      "contrasena": "miNuevaContrasenaSegura"
    }
 
-   
+
   ejemplo de Usuario para el login:
   {
   "correo": "oscar.manrique@example.com",
@@ -179,9 +179,32 @@ para probar el comentar y calificar una sesion completada: http://localhost:3000
   "comentario": "Excelente sesión, el tutor explicó muy bien su tema."
 }
 
+ESTOS SOLO LOS PUEDE HACER EL COORDINADOR (y son get)
 para probar el filtrar sesiones por tutor: http://localhost:3000/Sesion/filtarSesionesPorTutor/3 (el parametro es el id del tutor)
 para probar el filtrar sesiones por materia: http://localhost:3000/Sesion/filtarSesionesPorMateria/2 (el parametro es el id de la materia)
 para probar el filtrar sesiones por fecha exacta: http://localhost:3000/Sesion/filtarSesionesPorFecha/2025-07-10 (el parametro es la fecha actual)
 para probar el filtrar sesiones por completada: http://localhost:3000/Sesion/filtarSesionesPorEstado?completada=true (el parametro se cambia entre true o false)
 para probar el obtener cantidad de sesiones por tutor: http://localhost:3000/Sesion/sesionesPorTutor
 para probar el obtener cantidad de sesiones por materia: http://localhost:3000/Sesion/sesionesPorMateria
+
+PRUEBA DE OBTENER PERFIL: GET http://localhost:3000/Usuario/profile
+
+Prueba para actualizar tu propio perfil de usuario es:
+URL,PUT:http://localhost:3000/Usuario/profile
+Headers:
+  Authorization: Bearer [TU_JWT_TOKEN] (token JWT válido PROPORCIONADO AL ENTRAR ).
+  Body 
+   {
+     "nombre": "Mi Nuevo Nombre",
+     "contrasena": "miNuevaContrasenaSegura"
+   }
+  
+PRUEBA DE MARCAR SESION COMO COMPLETADA (solo puede hacerlo el tutor): http://localhost:3000/Sesion/marcarSesionCompletada/3/3 (el primero es el id del tutor el segundo es el id de la sesion)
+PRUEBA DE CALIFICAR UNA SESION: http://localhost:3000/Calificacion/calificarSesion body de ejemplo:
+{
+  "sesion_id": 1,
+  "estudiante_id": 2,
+  "tutor_id": 3,
+  "calificacion": 5,
+  "comentario": "Excelente sesión, el tutor horrible su tema, lo odio."
+}

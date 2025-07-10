@@ -11,13 +11,13 @@ export class CoordinadorController {
 
   constructor(private readonly CoordinadorService: CoordinadorService) {}
 
-  @Post('assign-tutor')
-  @Roles('coordinador')
+  @Post('asignar/tutor')
+  @Roles('Coordinador')
   @UseGuards(JwtRolesGuard)
   @HttpCode(HttpStatus.OK)
-  async assignTutorToMateria(@Body() assignTutorDto: AssignTutorDto) {
+  async asignarTutorMateria(@Body() asignacionTutor: AssignTutorDto) {
     try {
-      return await this.CoordinadorService.assignTutorToMateria(assignTutorDto);
+      return await this.CoordinadorService.assignTutorToMateria(asignacionTutor);
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);

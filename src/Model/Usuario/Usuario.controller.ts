@@ -12,7 +12,6 @@ export class UsuarioController {
   @Get('profile')
   @HttpCode(HttpStatus.OK)
   async getProfile(@Req() req) {
-    // req.user should be populated by the JwtRolesGuard
     const userId = req.user.sub;
     return this.usuarioService.getProfile(userId);
   }

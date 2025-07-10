@@ -11,7 +11,7 @@ export class SolicitudController {
   constructor(private readonly SolicitudService: SolicitudService) {}
   @UseGuards(JwtRolesGuard)
   @Roles('Tutor')
-  @Get('obtenerSolicitudes') // GET /Solicitud/ObtenerSolicituds 
+  @Get('obtenerSolicitudes') // GET /Solicitud/ObtenerSolicitudes 
   @HttpCode(HttpStatus.OK)
   async findAll(): Promise<Solicitud[]> {
     try {
